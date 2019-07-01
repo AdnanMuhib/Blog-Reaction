@@ -1,0 +1,38 @@
+[
+	{
+		"id": 1,
+		"title": "hi there I am getting started with React js",
+		"content": "lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec scelerisque augue. Fusce nulla tellus, aliquet eget turpis eu, mattis faucibus enim. Integer porttitor sem et ipsum convallis, sed euismod erat varius. Vestibulum quis auctor urna, gravida varius orci. Morbi at dui in purus faucibus faucibus non non ex. Morbi ac augue eu libero auctor laoreet in vitae dolor. Donec accumsan porta quam, eget varius leo cursus ut. Nam iaculis tristique mi eu porttitor. Donec mollis ipsum id orci egestas condimentum. Duis tempus augue quis dui tincidunt, et viverra magna finibus.",
+		"tags": ["Learning","Reactjs", "frontend"],
+		"slug":"blog-post-1"
+
+	},
+	{
+		"id": 2,
+		"title": "Post 2 hi there I am getting started with React js",
+		"content": "Lorem Ipsum Doler Imet, blah blah blah....",
+		"tags": ["Learning","Reactjs", "frontend"],
+		"slug":"blog-post-2"
+	},
+	{
+		"id": 3,
+		"title": "Post 3 hi there I am getting started with React js",
+		"content": "Lorem Ipsum Doler Imet, blah blah blah....",
+		"tags": ["Learning","Reactjs", "frontend"],
+		"slug":"blog-post-3"
+	},
+	{
+		"id": 4,
+		"title": "Post 4 hi there I am getting started with React js",
+		"content": "Lorem Ipsum Doler Imet, blah blah blah....",
+		"tags": ["Learning","Reactjs", "frontend"],
+		"slug":"blog-post-4"
+	},
+	{
+		"id": 5,
+		"title": "Post 5 hi there I am getting started with React js",
+		"content": "Lorem Ipsum Doler Imet, blah blah blah....",
+		"tags": ["Learning","Reactjs", "frontend"],
+		"slug":"blog-post-5"
+	}
+]
