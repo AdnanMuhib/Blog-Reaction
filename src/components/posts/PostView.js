@@ -6,6 +6,7 @@ function PostView(data) {
     let postTitle = null;
     let postContent = null;
     let postTag = null;
+    console.log(data)
     let postId =  data.match.params.id;
     for (var i=0; i<PostData.length; i++) {
         if(PostData[i].id === parseInt(postId)) {
@@ -22,4 +23,6 @@ function PostView(data) {
         <p>Tags: {postTag}</p>
     </div>)
 }
+
+
 export default PostView
