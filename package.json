@@ -2,7 +2,7 @@
   "name": "blog-reaction",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://adnanmuhib.github.io/Blog-Reaction",
+  "homepage": "https://adnanmuhib.github.io/Blog-Reaction/",
   "dependencies": {
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",
