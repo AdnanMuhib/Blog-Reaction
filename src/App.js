@@ -11,10 +11,10 @@ function App() {
       
     <div className="App">
       <Switch>
-        <Route path="/" exact component={Home}/>
-        <Route path="/home" component={Home}/>
-        <Route path="/posts" exact component={PostList}/>
-        <Route path= "/post/:id" component={PostView}/>
+        <Route path="/Blog-Reaction" exact component={Home}/>
+        <Route path="/Blog-Reaction/home" component={Home}/>
+        <Route path="/Blog-Reaction/posts" exact component={PostList}/>
+        <Route path= "/Blog-Reaction/post/:id" component={PostView}/>
       </Switch>
     </div>
     </Router>
@@ -25,7 +25,7 @@ function Home(){
   return (
     <div>
       <h1>Home Page</h1>
-      <h1><Link to={'/posts'}>{'BLOG'}</Link></h1>
+      <h1><Link to={'/Blog-Reaction/posts'}>{'BLOG'}</Link></h1>
     </div>
   );
 }

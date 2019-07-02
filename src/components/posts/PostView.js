@@ -17,7 +17,7 @@ function PostView(data) {
         }
     }
     return (<div>
-        <h2><Link to={'/posts'}>Back</Link></h2>
+        <h2><Link to={'/Blog-Reaction/posts'}>Back</Link></h2>
         <h1>{postTitle}</h1>
         <p>{postContent}</p>
         <p>Tags: {postTag}</p>

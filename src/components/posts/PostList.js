@@ -8,11 +8,11 @@ class PostList extends Component {
 			<div>
 				<h1>Blog Posts</h1>
 
-				<Link to='/home' >Home</Link>
+				<Link to='/Blog-Reaction/home' >Home</Link>
 				{PostData.map((postDetail, index)=>{
 					return <div key={postDetail.id}>
 						
-							<Link to={`/post/${postDetail.id}`}>
+							<Link to={`/Blog-Reaction/post/${postDetail.id}`}>
 								{postDetail.title}
 							</Link>
 					</div>
