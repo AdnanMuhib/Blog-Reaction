@@ -1,8 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom'
 
-import PostList from './posts/PostList'
-import PostView from './posts/PostView'
+import PostList from './components/posts/PostList'
+import PostView from './components/posts/PostView'
 import './App.css';
 
 function App() {
@@ -10,11 +10,10 @@ function App() {
     <Router>
       
     <div className="App">
-      {/* <PostList /> */}
       <Switch>
         <Route path="/" exact component={Home}/>
         <Route path="/home" component={Home}/>
-        <Route path="/post" exact component={PostList}/>
+        <Route path="/posts" exact component={PostList}/>
         <Route path= "/post/:id" component={PostView}/>
       </Switch>
     </div>
@@ -26,8 +25,9 @@ function Home(){
   return (
     <div>
       <h1>Home Page</h1>
-      <h1><Link to={'/post'}>{'BLOG'}</Link></h1>
+      <h1><Link to={'/posts'}>{'BLOG'}</Link></h1>
     </div>
   );
 }
+
 export default App;
