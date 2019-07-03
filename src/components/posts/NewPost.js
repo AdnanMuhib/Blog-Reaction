@@ -1,28 +1,40 @@
 import React from "react";
-import PostData from "../../data/posts.json";
 class NewPost extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //   }
+  constructor(props) {
+    console.log("I am constructor");
+    super(props);
+    this.state = {
+      posts: JSON.parse(localStorage.getItem("posts")),
+      updatePosts: props.callback
+    };
+    this.formSubmitHandler = this.formSubmitHandler.bind(this);
+  }
   formSubmitHandler(event) {
     event.preventDefault();
     let title = document.getElementById("title").value;
     let content = document.getElementById("content").value;
     let tags = document.getElementById("tags").value;
     let postData = {
-      id: PostData.length + 1,
+      id: this.state.posts.length + 1,
       title: title,
       content: content,
       tags: tags.split(", ")
     };
-    // console.log(postData);
-    let updatedData = PostData.concat(postData);
-    console.log(updatedData);
+    document.getElementById("title").value = ""
+    document.getElementById("content").value = ""
+    document.getElementById("tags").value = ""
+    this.setState({
+      posts:JSON.parse(localStorage.getItem("posts"))
+    })
+    let updatedData = this.state.posts.concat(postData);
+    localStorage.setItem("posts", JSON.stringify(updatedData));
+    this.state.updatePosts();
+    
   }
   render() {
     return (
       <div>
-        <h2>Enter Post Details</h2>
+        <h2>Add New Post</h2>
         <br />
         <form onSubmit={this.formSubmitHandler}>
           <div>

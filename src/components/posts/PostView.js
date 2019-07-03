@@ -1,8 +1,8 @@
 import React from "react";
-import PostData from "../../data/posts.json";
 import { Link } from "react-router-dom";
 
 function PostView(data) {
+  let PostData = JSON.parse(localStorage.getItem("posts"))
   let postTitle = null;
   let postContent = null;
   let postTag = null;
