@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import NewPost from "../posts/NewPost";
 import { Link } from "react-router-dom";
-
+import "../../App.css";
 class PostList extends Component {
   constructor(props) {
     super(props);
@@ -17,18 +17,22 @@ class PostList extends Component {
   render() {
     return (
       <div>
-        <h1>Blog Posts</h1>
-        <Link to="/Blog-Reaction/home">Home</Link>
-        {this.state.posts.map((postDetail, index) => {
-          return (
-            <div key={postDetail.id}>
-              <Link to={`/Blog-Reaction/post/${postDetail.id}`}>
-                {postDetail.title}
-              </Link>
-            </div>
-          );
-        })}
-        <NewPost callback={this.callback} />
+        <div className={"col-md-6"}>
+          <NewPost callback={this.callback} />
+        </div>
+        <div>
+          <h1>Blog Posts</h1>
+          <Link to="/Blog-Reaction/home">Home</Link>
+          {this.state.posts.map((postDetail, index) => {
+            return (
+              <div key={postDetail.id}>
+                <Link to={`/Blog-Reaction/post/${postDetail.id}`}>
+                  {postDetail.title}
+                </Link>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }

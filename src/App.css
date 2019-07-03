@@ -18,7 +18,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.col-md-6 {
+  width: 50%;
+  float: left;
+}
 .App-link {
   color: #61dafb;
 }

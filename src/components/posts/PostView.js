@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function PostView(data) {
-  let PostData = JSON.parse(localStorage.getItem("posts"))
+  let PostData = JSON.parse(localStorage.getItem("posts"));
   let postTitle = null;
   let postContent = null;
   let postTag = null;

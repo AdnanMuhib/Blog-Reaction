@@ -11,6 +11,9 @@ class NewPost extends React.Component {
   }
   formSubmitHandler(event) {
     event.preventDefault();
+    this.setState({
+      posts: JSON.parse(localStorage.getItem("posts"))
+    });
     let title = document.getElementById("title").value;
     let content = document.getElementById("content").value;
     let tags = document.getElementById("tags").value;
@@ -20,16 +23,13 @@ class NewPost extends React.Component {
       content: content,
       tags: tags.split(", ")
     };
-    document.getElementById("title").value = ""
-    document.getElementById("content").value = ""
-    document.getElementById("tags").value = ""
-    this.setState({
-      posts:JSON.parse(localStorage.getItem("posts"))
-    })
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+    document.getElementById("tags").value = "";
+
     let updatedData = this.state.posts.concat(postData);
     localStorage.setItem("posts", JSON.stringify(updatedData));
     this.state.updatePosts();
-    
   }
   render() {
     return (
