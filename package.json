@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "https://adnanmuhib.github.io/Blog-Reaction/",
   "dependencies": {
+    "@material-ui/core": "^4.0.0-rc.0",
+    "@material-ui/icons": "^4.2.1",
     "bootstrap": "^4.3.1",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",

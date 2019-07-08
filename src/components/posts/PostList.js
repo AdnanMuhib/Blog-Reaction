@@ -2,6 +2,18 @@ import React, { Component } from "react";
 import NewPost from "../posts/NewPost";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import { Grid } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
+// import { makeStyles } from "@material-ui/core/styles";
+import Divider from "@material-ui/core/Divider";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+// const useStyles = makeStyles(theme => ({
+//   root: {
+//     padding: theme.spacing(3, 2)
+//   }
+// }));
+// const classes = useStyles();
 class PostList extends Component {
   constructor(props) {
     super(props);
@@ -15,26 +27,42 @@ class PostList extends Component {
     this.setState({ posts: JSON.parse(localStorage.getItem("posts")) });
   }
   render() {
-    return (
-      <div>
-        <div className={"col-md-6"}>
-          <NewPost callback={this.callback} />
-        </div>
-        <div>
-          <h1>Blog Posts</h1>
-          <Link to="/Blog-Reaction/home">Home</Link>
-          {this.state.posts.map((postDetail, index) => {
-            return (
-              <div key={postDetail.id}>
-                <Link to={`/Blog-Reaction/post/${postDetail.id}`}>
-                  {postDetail.title}
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+    const pageLayout = (
+      <React.Fragment>
+        <CssBaseline />
+        <Grid container spacing={3}>
+          <Grid item xs={3} />
+          <Grid
+            item
+            xs={6}
+            style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
+          >
+            {this.state.posts.map((postDetail, index) => {
+              return (
+                <div key={postDetail.id}>
+                  <Paper className={"root"} square={false}>
+                    {/* <Paper className={classes.root}> */}
+                    <h3>
+                      <Link
+                        to={`/Blog-Reaction/post/${postDetail.id}`}
+                        style={{ textDecoration: "none", color: "black" }}
+                      >
+                        {postDetail.title}
+                      </Link>
+                    </h3>
+                  </Paper>
+                  <Divider />
+                </div>
+              );
+            })}
+          </Grid>
+          <Grid item xs={3}>
+            <NewPost callback={this.callback} />
+          </Grid>
+        </Grid>
+      </React.Fragment>
     );
+    return <div>{pageLayout}</div>;
   }
 }
 

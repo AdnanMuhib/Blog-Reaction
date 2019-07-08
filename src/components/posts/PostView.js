@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 function PostView(data) {
   let PostData = JSON.parse(localStorage.getItem("posts"));
@@ -18,9 +18,9 @@ function PostView(data) {
   }
   return (
     <div>
-      <h2>
+      {/* <h2>
         <Link to={"/Blog-Reaction/posts"}>Back</Link>
-      </h2>
+      </h2> */}
       <h1>{postTitle}</h1>
       <p>{postContent}</p>
       <p>Tags: {postTag}</p>
