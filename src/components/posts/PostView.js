@@ -1,31 +1,42 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import BlogAPI from "../../api/BlogAPI";
 
-function PostView(data) {
-  let PostData = JSON.parse(localStorage.getItem("posts"));
-  let postTitle = null;
-  let postContent = null;
-  let postTag = null;
-  console.log(data);
-  let postId = data.match.params.id;
-  for (var i = 0; i < PostData.length; i++) {
-    if (PostData[i].id === parseInt(postId)) {
-      postTitle = PostData[i].title;
-      postContent = PostData[i].content;
-      postTag = PostData[i].tags.join(", ");
-      break;
-    }
+class PostView extends React.Component {
+  API = new BlogAPI();
+  postTitle = "";
+  postBody = "";
+  postTags = "";
+  getPost = () => {
+    this.API.getPost(this.props.id)
+      .then(response => {
+        this.postTitle = response.data.title;
+        this.postBody = response.data.body;
+        this.postTags = response.data.tags;
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        console.log();
+      });
+  };
+  componentDidMount() {
+    this.getPost();
   }
-  return (
-    <div>
-      {/* <h2>
-        <Link to={"/Blog-Reaction/posts"}>Back</Link>
-      </h2> */}
-      <h1>{postTitle}</h1>
-      <p>{postContent}</p>
-      <p>Tags: {postTag}</p>
-    </div>
-  );
-}
 
+  componentWillUpdate() {
+    this.getPost();
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.postTitle}</h1>
+        <br />
+        <p>{this.postBody}</p>
+        <br />
+        <p>{this.postTags}</p>
+      </div>
+    );
+  }
+}
 export default PostView;

@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-
+import BlogAPI from "../../api/BlogAPI";
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1)
@@ -65,6 +65,7 @@ function NewPostForm(props) {
     </form>
   );
 }
+
 function SubmitButton() {
   const classes = useStyles();
   return (
@@ -80,11 +81,10 @@ function SubmitButton() {
 }
 
 class NewPost extends React.Component {
+  API = new BlogAPI();
   constructor(props) {
-    console.log("I am constructor");
     super(props);
     this.state = {
-      posts: JSON.parse(localStorage.getItem("posts")),
       updatePosts: props.callback
     };
     this.formSubmitHandler = this.formSubmitHandler.bind(this);
@@ -92,25 +92,28 @@ class NewPost extends React.Component {
 
   formSubmitHandler(event) {
     event.preventDefault();
-    this.setState({
-      posts: JSON.parse(localStorage.getItem("posts"))
-    });
     let title = document.getElementById("title").value;
     let content = document.getElementById("content").value;
     let tags = document.getElementById("tags").value;
+
     let postData = {
-      id: this.state.posts.length + 1,
       title: title,
-      content: content,
+      body: content,
       tags: tags.split(", ")
     };
-    document.getElementById("title").value = "";
-    document.getElementById("content").value = "";
-    document.getElementById("tags").value = "";
-
-    let updatedData = this.state.posts.concat(postData);
-    localStorage.setItem("posts", JSON.stringify(updatedData));
-    this.state.updatePosts();
+    this.API.submitPost(postData)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        this.state.updatePosts();
+        document.getElementById("title").value = "";
+        document.getElementById("content").value = "";
+        document.getElementById("tags").value = "";
+      });
   }
   render() {
     return (
