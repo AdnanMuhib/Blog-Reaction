@@ -20,7 +20,7 @@ function NewPostForm(props) {
   const [values, setValues] = React.useState({
     title: "Cat in the Hat",
     tags: "",
-    content: "Controlled"
+    body: "Controlled"
   });
 
   const handleChange = name => event => {
@@ -39,15 +39,15 @@ function NewPostForm(props) {
       />
       <br />
       <TextField
-        id="content"
-        label="Post Content"
+        id="body"
+        label="Post body"
         multiline
         rowsMax="4"
         value={values.multiline}
-        onChange={handleChange("content")}
+        onChange={handleChange("body")}
         className={classes.textField}
         margin="normal"
-        helperText="Enter the Post content"
+        helperText="Enter the Post body"
         variant="outlined"
       />
       <br />
@@ -61,22 +61,10 @@ function NewPostForm(props) {
         variant="outlined"
       />
       <br />
-      <SubmitButton />
+      <Button variant="contained" color="primary" type="submit">
+        Submit
+      </Button>
     </form>
-  );
-}
-
-function SubmitButton() {
-  const classes = useStyles();
-  return (
-    <Button
-      variant="contained"
-      color="primary"
-      type="submit"
-      className={classes.button}
-    >
-      Submit
-    </Button>
   );
 }
 

@@ -1,12 +1,13 @@
+// React Imports
 import React from "react";
-import PropTypes from "prop-types";
+
+// material UI Imports
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Tabs, Tab } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import Home from "../../components/Home";
-import PostList from "../posts/PostList";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Container from "@material-ui/core/Container";
+
+// React Router Imports
+import { Link } from "react-router-dom";
 
 function TabContainer(props) {
   return (
@@ -15,9 +16,7 @@ function TabContainer(props) {
     </Typography>
   );
 }
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired
-};
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -36,44 +35,26 @@ export default function NavBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Home" />
-          <Tab label="About" />
-          <Tab label="Blog" />
+          <Tab
+            label={
+              <Link to="/" style={{ color: "white" }}>
+                Home
+              </Link>
+            }
+          />
+          <Tab
+            label={
+              <Link to="/posts" style={{ color: "white" }}>
+                Blog
+              </Link>
+            }
+          />
         </Tabs>
       </AppBar>
-      {value === 0 && (
-        <TabContainer>
-          <React.Fragment>
-            <CssBaseline />
-            <Container maxWidth="md">
-              <Home />
-              <Typography
-                component="div"
-                style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
-              />
-            </Container>
-          </React.Fragment>
-        </TabContainer>
-      )}
-      {value === 1 && (
-        <TabContainer>
-          <h2>About This Blog</h2>
-          <React.Fragment>
-            <CssBaseline />
-            <Container maxWidth="md">
-              <Typography
-                component="div"
-                style={{ backgroundColor: "#cfe8fc", height: "50vh" }}
-              />
-            </Container>
-          </React.Fragment>
-        </TabContainer>
-      )}
-      {value === 2 && (
-        <TabContainer>
-          <PostList />
-        </TabContainer>
-      )}
+      {/* To Display something Fixed under Home tab */}
+      {value === 0 && <TabContainer />}
+      {/* To Display something Fixed under Blog tab */}
+      {value === 1 && <TabContainer />}
     </div>
   );
 }

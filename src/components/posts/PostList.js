@@ -1,13 +1,28 @@
 import React, { Component } from "react";
-import NewPost from "../posts/NewPost";
 import { Link } from "react-router-dom";
-import "../../App.css";
 import { Grid } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import CssBaseline from "@material-ui/core/CssBaseline";
+// import Icon from "@material-ui/core/Icon";
+// import Fab from '@material-ui/core/Fab';
+// import Button from "@material-ui/core/Button";
+import DeleteIcon from '@material-ui/icons/Delete';
+
 import PostView from "./PostView";
 import BlogAPI from "../../api/BlogAPI";
+import NewPost from "../posts/NewPost";
+import "../../App.css";
+
+// const useStyles = makeStyles(theme => ({
+//   button: {
+//     margin: theme.spacing(1),
+//   },
+//   input: {
+//     display: 'none',
+//   },
+// }));
+
 class PostList extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +33,6 @@ class PostList extends Component {
       errorMSG: "",
       selectedPost: 6
     };
-    this.callback = this.callback.bind(this);
   }
 
   API = new BlogAPI();
@@ -50,17 +64,19 @@ class PostList extends Component {
     this.updatePostsState();
   }
   // classes = useStyles();
-  callback(event) {
+  callback = event => {
     this.updatePostsState();
-  }
+  };
 
-  getSelectedPost = postID => {
+  setSelectedPost = postID => {
     this.setState({
       selectedPost: postID
     });
     console.log("Selected Post: " + this.state.selectedPost);
   };
+
   render() {
+    // let  { classes } = this.props;
     let data;
     if (this.state.loading === true) {
       data = "LOADING....";
@@ -76,10 +92,18 @@ class PostList extends Component {
                 <Link
                   to={`/Blog-Reaction/post/${postDetail.id}`}
                   style={{ textDecoration: "none", color: "black" }}
-                  onClick={this.getSelectedPost.bind(null, postDetail.id)}
+                  onClick={() => this.setSelectedPost(postDetail.id)}
                 >
                   {postDetail.title}
                 </Link>
+                {/* <Button
+                  variant="contained"
+                  color="secondary"
+                  // className={classes.button}
+                >
+                  Delete
+                </Button> */}
+                <DeleteIcon style={{color:'white', backgroundColor:'red'}}/>
               </h3>
             </Paper>
             <Divider />
