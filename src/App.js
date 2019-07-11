@@ -2,8 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/navbar/NavBar";
-import PostsList from "./components/posts/ListView";
+import PostList from "./components/posts/PostList";
 import PostView from "./components/posts/PostView";
+import PostForm from "./components/posts/PostForm";
 import Home from "./components/Home";
 function App() {
   return (
@@ -12,9 +13,11 @@ function App() {
         <NavBar />
         {/* <PostsList/> */}
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/posts" exact component={PostsList} />
-          <Route path="/post/:id" exact component={PostView} />
+          <Route path="/Blog-Reaction" exact component={Home} />
+          <Route path="/Blog-Reaction/posts" exact component={PostList} />
+          <Route path="/Blog-Reaction/posts/new" exact component={PostForm} />
+          <Route path="/Blog-Reaction/post/edit/:id" exact component={PostForm} />
+          <Route path="/Blog-Reaction/post/:id" exact component={PostView} />
         </Switch>
       </div>
     </Router>
