@@ -75,12 +75,8 @@ class PostList extends React.Component {
     this.getPosts();
   }
   deletePost = id => {
-    console.log("Delete Post with ID: " + id);
     this.API.deletePost(id)
-      .then(response => {
-        console.log("Response From Delete Post");
-        console.log(response);
-      })
+      .then(response => {})
       .catch(errors => {
         this.setState({
           error: true,
@@ -122,7 +118,9 @@ class PostList extends React.Component {
                     {this.state.posts.map(row => (
                       <TableRow key={row.id}>
                         <TableCell component="th" scope="row">
-                          <Link to={"/Blog-Reaction/post/" + row.id}>{row.title}</Link>
+                          <Link to={"/Blog-Reaction/post/" + row.id}>
+                            {row.title}
+                          </Link>
                         </TableCell>
                         <TableCell align="right">
                           <Button

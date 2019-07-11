@@ -17,7 +17,7 @@ function Home() {
   return (
     <div>
       <h2>Welcome to First Blog in React Js</h2>
-      <Link to={"/posts"}><Button variant="contained" color="secondary" className={classes.button}>
+      <Link to={"/Blog-Reaction/posts"}><Button variant="contained" color="secondary" className={classes.button}>
             See Latest Posts
         </Button></Link> 
     </div>
