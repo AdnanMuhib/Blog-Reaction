@@ -1,45 +1,22 @@
 // React Imports
 import React from "react";
-import PropTypes from "prop-types";
-
 //  Material UI imports
-import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
-import { green } from "@material-ui/core/colors";
+// Bootstrap imports
+import { Table, Container } from "react-bootstrap";
 // React Router Imports
 import { Link } from "react-router-dom";
-
+// Paginator Imports
+import Pagination from "material-ui-flat-pagination";
 // Custom Imports
-import BlogAPI from "../../services/BlogAPI";
+import PostListHeader from "./PostListHeader";
+import SortPosts from "../sort";
+import API from "../../services/blogAPI";
+import { initilizeLikesStorage } from "../../utils";
 
-// Custom Styles
-const styles = theme => ({
-  root: {
-    width: "100%",
-    marginTop: theme.spacing(3),
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 650
-  },
-  close: {
-    padding: theme.spacing(0.5)
-  },
-  success: {
-    backgroundColor: green[500]
-  }
-});
+import axios from "axios";
+// import SortPosts from "../sort";
 
 // PostsList React Component
 class PostList extends React.Component {
@@ -47,35 +24,129 @@ class PostList extends React.Component {
     posts: [],
     loading: true,
     error: false,
-    errorMSG: ""
+    errorMSG: "",
+    offset: 0,
+    totalPosts: 0,
+    paginationMode: 1,
+    sortOrder: "asc"
   };
 
-  API = new BlogAPI();
-  getPosts = () => {
+  // handle search submit
+  handleSearchSubmit = keyword => {
     this.setState({
-      loading: true
+      paginationMode: 0
     });
+    if (keyword === "") {
+      this.getTotalPostsCount();
+      this.getPosts(1);
+      this.setState({
+        paginationMode: 1
+      });
+    } else {
+      API.searchPosts(keyword)
+        .then(response => {
+          this.setState({
+            posts: response.data,
+            totalPosts: response.data.length
+          });
+        })
+        .catch(error => {
+          if (axios.isCancel(error)) {
+            // API request cancelled
+          } else {
+            this.setState({
+              error: true,
+              errorMSG: error.message
+            });
+          }
+        });
+    }
+  };
 
-    this.API.getPosts()
+  // handle pagination
+  handlePaginationClick = (offset, total) => {
+    this.setState({ offset });
+    this.getPosts(total);
+  };
+  getSortedPosts = (key, order) => {
+    API.sortPosts(key, order)
       .then(response => {
         this.setState({
+          loading: false,
           posts: response.data,
-          loading: false
+          totalPosts: response.data.length
+        });
+      })
+      .catch(error => {
+        this.setState({
+          loading: false,
+          error: true,
+          errorMSG: error.message
+        });
+      });
+  };
+  // handle Sorting
+  handleSortingClick = (key, order) => {
+    this.setState(
+      {
+        loading: true,
+        paginationMode: 0,
+        sortOrder: order
+      },
+      () => this.getSortedPosts(key, this.state.sortOrder)
+    );
+  };
+
+  getTotalPostsCount = () => {
+    let totalPostsCount = 0;
+    API.getPosts()
+      .then(response => {
+        totalPostsCount = response.data.length;
+        this.setState({
+          totalPosts: totalPostsCount
         });
       })
       .catch(errors => {
         this.setState({
-          loading: false,
           error: true,
           errorMSG: errors
         });
       });
   };
+
+  getPosts = total => {
+    if (this.state.posts.length === 0) {
+      this.setState({
+        loading: true
+      });
+    }
+    try {
+      API.getPaginatedPosts(total)
+        .then(response => {
+          this.setState({
+            loading: false,
+            posts: response.data
+          });
+        })
+        .finally(() => {
+          initilizeLikesStorage(this.state.posts);
+        });
+    } catch (errors) {
+      this.setState({
+        loading: false,
+        errorMSG: errors.message,
+        error: true
+      });
+    }
+  };
+
   componentDidMount() {
-    this.getPosts();
+    this.getTotalPostsCount();
+    this.getPosts(1);
   }
+
   deletePost = id => {
-    this.API.deletePost(id)
+    API.deletePost(id)
       .then(response => {})
       .catch(errors => {
         this.setState({
@@ -84,79 +155,89 @@ class PostList extends React.Component {
         });
       })
       .finally(() => {
-        this.getPosts();
+        this.getPosts(1);
       });
   };
+
   render() {
-    const { classes } = this.props;
+    const DATE_OPTIONS = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric"
+    };
     let data = "";
     if (this.state.loading === true) {
-      data = <CircularProgress />;
+      data = (
+        <div className="Center">
+          <CircularProgress />
+        </div>
+      );
     } else if (this.state.error === true) {
       data = (
-        <div>
+        <div className="Center">
           Something Went Wrong
-          <p style={{ color: "red" }}>{this.state.errorMSG}</p>
+          <p className="Red">{this.state.errorMSG}</p>
         </div>
       );
     } else {
       data = (
         <div>
-          <Grid container spacing={3}>
-            <Grid item xs={3} />
-            <Grid item xs={6}>
-              <Paper className={classes.root}>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Latest Blog Posts From the API</TableCell>
-                      <TableCell align="right">&nbsp;</TableCell>
-                      <TableCell align="right">&nbsp;</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {this.state.posts.map(row => (
-                      <TableRow key={row.id}>
-                        <TableCell component="th" scope="row">
-                          <Link to={"/Blog-Reaction/post/" + row.id}>
-                            {row.title}
-                          </Link>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Button
-                            className={classes.button}
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => this.deletePost(row.id)}
-                          >
-                            <DeleteIcon />
-                          </Button>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Link to={"/Blog-Reaction/post/edit/" + row.id}>
-                            <Button
-                              className={classes.button}
-                              variant="contained"
-                              color="primary"
-                            >
-                              <EditIcon />
-                            </Button>
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Paper>
+          <PostListHeader handleSubmit={this.handleSearchSubmit} />
+          <Container fluid id="modified-container">
+            <Table responsive striped hover size="sm">
+              {/* Table Header is part of SortPosts Component */}
+              <SortPosts
+                handleSort={this.handleSortingClick}
+                order={this.state.sortOrder}
+              />
+              <tbody>
+                {this.state.posts.map(post => (
+                  <tr key={post.id}>
+                    <th scope="row">
+                      <input type="checkbox" />
+                    </th>
+                    <td>
+                      <Link to={`/post/${post.id}`} className="PostTitle">
+                        {post.title}
+                      </Link>
+                      <br />
+                      &nbsp;<Link to={`/post/edit/${post.id}`}>Edit</Link>
+                      &nbsp;&nbsp;
+                      <Link to="#" onClick={() => this.deletePost(post.id)}>
+                        Delete
+                      </Link>
+                    </td>
+                    <td>{post.tags}</td>
+                    <td>
+                      {new Date(post.createdAt).toLocaleDateString(
+                        "en-GB",
+                        DATE_OPTIONS
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Container>
+          <Grid container>
+            <Grid item xs={4} />
+            <Grid item xs={4}>
+              {this.state.paginationMode === 1 && (
+                <Pagination
+                  limit={5}
+                  offset={this.state.offset}
+                  total={this.state.totalPosts}
+                  onClick={(e, offset, total) =>
+                    this.handlePaginationClick(offset, total)
+                  }
+                  className="Center"
+                  size="large"
+                  nextPageLabel={<span className="XLargeFont">></span>}
+                  previousPageLabel={<span className="XLargeFont"> {"<"}</span>}
+                />
+              )}
             </Grid>
-            <Grid item xs={3}>
-              <Link to="/Blog-Reaction/posts/new">
-                {" "}
-                <Button variant="contained" className={classes.success}>
-                  <AddIcon style={{ color: "white" }} />
-                </Button>
-              </Link>
-            </Grid>
+            <Grid item xs={4} />
           </Grid>
         </div>
       );
@@ -166,7 +247,4 @@ class PostList extends React.Component {
   }
 }
 
-PostList.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-export default withStyles(styles)(PostList);
+export default PostList;

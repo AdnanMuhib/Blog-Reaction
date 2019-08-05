@@ -1,36 +1,120 @@
-.App {
-  text-align: center;
+.Logo {
+  text-align: left;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.SortArrow {
   color: white;
 }
-.col-md-6 {
-  width: 50%;
-  float: left;
+.roundedCircle {
+  background-color: lightgray;
+  border-radius: 100px;
 }
-.App-link {
-  color: #61dafb;
+.CommentUser {
+  margin: 0;
+}
+.CommentDate {
+  color: lightgray;
+  font-size: small;
+  margin: 0;
+}
+.CommentMessage {
+  margin: 0;
+}
+.MockLink {
+  color: blue;
+  cursor: pointer;
+}
+.Link {
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media only screen and (max-width: 720px) {
+  .Logo {
+    text-align: center;
   }
-  to {
-    transform: rotate(360deg);
+  .CommentSubmit {
+    text-align: center;
   }
+  .LikeButton {
+    width: 100%;
+    text-align: center;
+  }
+  .PostViewTitle {
+    font-size: large;
+  }
+}
+#PaddingRow {
+  margin-top: 20px;
+}
+#Overlay {
+  top: unset;
+}
+#Overlay .card-title {
+  font-weight: 300;
+}
+#modified-container {
+  padding: 10px 50px;
+}
+.Center {
+  text-align: center;
+}
+.Red {
+  color: red;
+}
+.White {
+  color: white;
+}
+.PostTitle {
+  color: black;
+  font-weight: bold;
+}
+.XLargeFont {
+  font-size: xx-large;
+}
+.container {
+  padding: 20px !important;
+}
+.HeaderContainer {
+  padding: 20px;
+}
+.HeaderContainer .col {
+  margin: 10px;
+}
+#inputGroupPrepend {
+  background-color: #007bff;
+  color: white;
+}
+#inputGroupPrepend1 {
+  background-color: #c2c7cc;
+  color: black;
+}
+.MuiFlatPageButton-rootCurrent {
+  background-color: #08f !important;
+  color: white !important;
+}
+.MuiFlatPageButton-sizeLarge {
+  font-size: x-large !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 30px;
+  height: 30px;
+}
+
+#keywordInput {
+  background-color: #d3d3d36b;
+}
+#tagsInput {
+  background-color: #e9ecef87;
+  padding: 5px;
+}
+#tagsInput .form-label {
+  font-weight: bold;
+}
+#BgImage {
+  margin-right: -65px;
+  margin-left: -65px;
+}
+.mb-10 {
+  margin-bottom: 10px;
 }

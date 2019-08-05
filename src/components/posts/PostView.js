@@ -1,37 +1,21 @@
 // React Imports
 import React from "react";
-import PropTypes from "prop-types";
 
 // Material UI Import
-import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import ThumbUp from "@material-ui/icons/ThumbUp";
+import ThumbDown from "@material-ui/icons/ThumbDown";
+// import { Link } from "react-router-dom";
 
-import { Link } from "react-router-dom";
+// bootstrap imports
+import { Container, Row, Button, Card } from "react-bootstrap";
 
-import BlogAPI from "../../services/BlogAPI";
-
-const styles = theme => ({
-  card: {
-    minWidth: 275
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  }
-});
+// Custom Imports
+import API from "../../services/blogAPI";
+import CommentsList from "../comments/CommentsList";
+import CommentForm from "../comments/CommentForm";
+import { isPostLiked, toggleLike } from "../../utils";
+// import BgImage from "../../static/images/post-bg.jpg";
 
 class PostView extends React.Component {
   constructor(props) {
@@ -39,19 +23,19 @@ class PostView extends React.Component {
     this.state = {
       id: props.match.params.id,
       post: {},
+      like: 0,
+      totalLikes: 0,
       loading: true,
       error: false,
       errorMSG: ""
     };
   }
 
-  API = new BlogAPI();
-
   getPost = () => {
     this.setState({
       loading: true
     });
-    this.API.getPost(this.state.id)
+    API.getPost(this.state.id)
       .then(response => {
         this.setState({
           post: response.data,
@@ -59,76 +43,160 @@ class PostView extends React.Component {
         });
       })
       .catch(error => {
-        console.log(error);
         this.setState({
           loading: false,
           error: true,
-          errorMSG: error
+          errorMSG: error.message
         });
-      })
-      .finally(() => {
-        console.log();
       });
   };
 
+  getLikes = () => {
+    try {
+      // local storage check
+      if (isPostLiked(this.state.id)) {
+        this.setState({
+          like: 1
+        });
+      } else {
+        this.setState({
+          like: 0
+        });
+      }
+
+      // API update
+      API.getLikes(this.state.id).then(response => {
+        let likes = response.data;
+        this.setState({
+          totalLikes: likes.length
+        });
+      });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: true,
+        errorMSG: error.message
+      });
+    }
+  };
   componentDidMount() {
     this.getPost();
+    this.getLikes();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.id !== prevProps.id) {
       this.getPost();
+      this.getLikes();
     }
   }
 
+  handleLike = () => {
+    toggleLike(this.state.id);
+    if (isPostLiked(this.state.id)) {
+      API.submitLike(this.state.id)
+        .catch(errors => {
+          this.setState({
+            loading: false,
+            error: true,
+            errorMSG: errors.message
+          });
+        })
+        .finally(() => {
+          this.getLikes();
+        });
+    } else {
+      let likes = [];
+      let likeId = 0;
+      API.getLikes(this.state.id)
+        .then(response => {
+          likes = response.data;
+        })
+        .catch(errors => {
+          this.setState({
+            loading: false,
+            error: true,
+            errorMSG: errors.message
+          });
+        })
+        .finally(() => {
+          if (likes.length > 0) {
+            likeId = likes[0].id;
+            API.deleteLike(this.state.id, likeId);
+          }
+          this.getLikes();
+        });
+    }
+  };
+
   render() {
-    const { classes } = this.props;
+    let likeButton = (
+      <>
+        <Button variant="success" onClick={this.handleLike}>
+          <ThumbDown className="White" />
+          &nbsp;{this.state.totalLikes}
+        </Button>
+      </>
+    );
+
+    if (this.state.like === 0) {
+      likeButton = (
+        <>
+          <Button variant="danger" onClick={this.handleLike}>
+            <ThumbUp className="White" />
+            &nbsp;{this.state.totalLikes}
+          </Button>
+        </>
+      );
+    }
+
     let data = "";
     if (this.state.loading === true) {
-      data = <CircularProgress />;
+      data = (
+        <div className="Center">
+          <CircularProgress />
+        </div>
+      );
     } else if (this.state.error === true) {
       data = (
-        <div>
+        <div className="Center">
           Something Went Wrong
-          <p style={{ color: "red" }}>{this.state.errorMSG}</p>
+          <p className="Red">{this.state.errorMSG}</p>
         </div>
       );
     } else {
-      data = (<Grid container spacing={3}>
-      <Grid item xs={3}>
-        <Link to="/Blog-Reaction/posts">
-          <Button variant="contained" color="primary">
-            Back to Posts
-          </Button>
-        </Link>
-      </Grid>
-      <Grid item xs={6}>
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {this.state.post.title}
-            </Typography>
-            <Typography className={classes.pos} color="textSecondary">
-              {this.state.post.tags}
-            </Typography>
-            <Typography variant="body2" component="p">
-              {this.state.post.body}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small" variant="contained" color="inherit">
-              share
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
-      <Grid item xs={3} />
-    </Grid>)
+      data = (
+        <>
+          <Container fluid>
+            <Row>
+              <Card className="bg-dark text-white">
+                <Card.Img
+                  src="../../images/post-bg.jpg"
+                  alt="Post Feature image"
+                />
+                <Card.ImgOverlay id="Overlay">
+                  <Card.Title as="h1" className="PostViewTitle">
+                    {this.state.post.title}
+                  </Card.Title>
+                </Card.ImgOverlay>
+              </Card>
+            </Row>
+          </Container>
+          <br />
+          <Container id="modified-container">
+            <Row>{this.state.post.body}</Row>
+            <Row id="PaddingRow">
+              <div className="LikeButton">{likeButton}</div>
+            </Row>
+            <CommentForm postId={this.state.id} />
+            <Row id="PaddingRow">
+              <CommentsList postId={this.state.id} />
+            </Row>
+          </Container>
+        </>
+      );
     }
-    return data
+    return data;
   }
 }
-PostView.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-export default withStyles(styles)(PostView);
+export default PostView;

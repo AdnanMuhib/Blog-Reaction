@@ -37,14 +37,14 @@ export default function NavBar() {
         <Tabs value={value} onChange={handleChange} centered>
           <Tab
             label={
-              <Link to="/Blog-Reaction" style={{ color: "white" }}>
+              <Link to="/" style={{ color: "white" }}>
                 Home
               </Link>
             }
           />
           <Tab
             label={
-              <Link to="/Blog-Reaction/posts" style={{ color: "white" }}>
+              <Link to="/posts" style={{ color: "white" }}>
                 Blog
               </Link>
             }

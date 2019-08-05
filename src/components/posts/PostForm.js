@@ -1,30 +1,18 @@
 // React Imports
 import React from "react";
-import PropTypes from "prop-types";
 
 // Material UI Imports
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
+import AddIcon from "@material-ui/icons/Add";
+
+// Bootsrap Imports
+import { Form, Container, Row, Col, Button, InputGroup } from "react-bootstrap";
 
 // React Router Imports
 import { Redirect, Link } from "react-router-dom";
 
 // Custom Imports
-import BlogAPI from "../../services/BlogAPI";
+import API from "../../services/blogAPI";
 
-const styles = theme => ({
-  button: {
-    margin: theme.spacing(1)
-  },
-  input: {
-    display: "none"
-  },
-  dense: {
-    marginTop: theme.spacing(2)
-  }
-});
 class PostForm extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +27,6 @@ class PostForm extends React.Component {
     };
   }
 
-  API = new BlogAPI();
   state = {
     title: "",
     tags: "",
@@ -68,7 +55,7 @@ class PostForm extends React.Component {
   // If form is in Update mode then data of existing
   // post needs to be fetched and filled in form
   getExistingPost = () => {
-    this.API.getPost(this.state.postId).then(response => {
+    API.getPost(this.state.postId).then(response => {
       let post = response.data;
       this.setState({
         title: post.title,
@@ -80,7 +67,7 @@ class PostForm extends React.Component {
 
   // Submission of newly Created Post
   submitNewPost = postData => {
-    this.API.submitPost(postData)
+    API.submitPost(postData)
       .then(response => {})
       .catch(error => {
         console.log(error);
@@ -94,7 +81,7 @@ class PostForm extends React.Component {
 
   // Submission of Existing Post with Updated Data
   updateExistingPost = postData => {
-    this.API.updatePost(this.state.postId, postData)
+    API.updatePost(this.state.postId, postData)
       .then(response => {})
       .catch(errors => {
         console.log(errors);
@@ -122,81 +109,79 @@ class PostForm extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
     if (this.state.redirect === true) {
       return <Redirect to="/posts" push />;
     } else {
       let submitButton = (
-        <Button variant="contained" color="primary" type="submit">
-          Submit
+        <Button block type="submit">
+          Publish
         </Button>
       );
       if (this.state.updateMode === true) {
         submitButton = (
-          <Button variant="contained" color="primary" type="submit">
+          <Button block type="submit">
             Update
           </Button>
         );
       }
       return (
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <Link to="/Blog-Reaction/posts">
-              <Button variant="contained" color="secondary" size="medium">
-                Back to Posts
-              </Button>
-            </Link>
-          </Grid>
-          <Grid item xs={6}>
-            <form
-              className={classes.container}
-              onSubmit={this.handleFormSubmit}
-            >
-              <TextField
-                id="title"
-                label="Post Title"
-                className={classes.textField}
-                value={this.state.title}
-                onChange={this.handleChange("title")}
-                margin="normal"
-                variant="outlined"
-              />
-              <br />
-              <TextField
-                id="body"
-                label="Post body"
-                multiline
-                rowsMax="4"
-                value={this.state.body}
-                onChange={this.handleChange("body")}
-                className={classes.textField}
-                margin="normal"
-                helperText="Enter the Post body"
-                variant="outlined"
-              />
-              <br />
-              <TextField
-                id="tags"
-                label="Post Tags"
-                className={classes.textField}
-                value={this.state.tags}
-                onChange={this.handleChange("tags")}
-                margin="normal"
-                variant="outlined"
-              />
-              <br />
-              {submitButton}
-            </form>
-          </Grid>
-          <Grid item xs={3} />
-        </Grid>
+        <Container fluid>
+          <h1>{this.state.updateMode ? 'Edit Post':'Add New Post'}</h1>
+          <Form onSubmit={this.handleFormSubmit}>
+            <Row>
+              <Col md={9}>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter post title here"
+                    value={this.state.title}
+                    onChange={this.handleChange("title")}
+                  />
+                </Form.Group>
+                <Form.Group controlId="postBody">
+                  <Form.Control
+                    as="textarea"
+                    rows="10"
+                    value={this.state.body}
+                    onChange={this.handleChange("body")}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <div id="tagsInput">
+                <Form.Label id="">Post Tags</Form.Label>
+                <InputGroup>
+                  <Form.Control
+                    type="text"
+                    value={this.state.tags}
+                    onChange={this.handleChange("tags")}
+                    autoComplete="off"
+                    aria-describedby="inputGroupPrepend1"
+                  />
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id="inputGroupPrepend1" >
+                      <AddIcon />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                </InputGroup>
+                <Form.Text>Seperate Tags with commas</Form.Text>
+                <br />
+                <br />
+                <Form.Group controlId="formBasicEmail">
+                  {submitButton}
+                </Form.Group>
+                </div>
+              </Col>
+              
+            </Row>
+          </Form>
+          <Link to="/posts">
+            <Button>Back to Posts</Button>
+          </Link>
+        </Container>
       );
     }
   }
 }
 
-PostForm.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(PostForm);
+export default PostForm;

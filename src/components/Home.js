@@ -15,9 +15,10 @@ const useStyles = makeStyles(theme => ({
 function Home() {
     const classes = useStyles();
   return (
-    <div>
+    <div className="Center">
       <h2>Welcome to First Blog in React Js</h2>
-      <Link to={"/Blog-Reaction/posts"}><Button variant="contained" color="secondary" className={classes.button}>
+      
+      <Link to={"/posts"}><Button variant="contained" color="secondary" className={classes.button}>
             See Latest Posts
         </Button></Link> 
     </div>
