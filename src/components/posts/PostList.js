@@ -197,11 +197,11 @@ class PostList extends React.Component {
                       <input type="checkbox" />
                     </th>
                     <td>
-                      <Link to={`/post/${post.id}`} className="PostTitle">
+                      <Link to={`/Blog-Reaction/post/${post.id}`} className="PostTitle">
                         {post.title}
                       </Link>
                       <br />
-                      &nbsp;<Link to={`/post/edit/${post.id}`}>Edit</Link>
+                      &nbsp;<Link to={`/Blog-Reaction/post/edit/${post.id}`}>Edit</Link>
                       &nbsp;&nbsp;
                       <Link to="#" onClick={() => this.deletePost(post.id)}>
                         Delete

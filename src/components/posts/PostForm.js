@@ -175,7 +175,7 @@ class PostForm extends React.Component {
               
             </Row>
           </Form>
-          <Link to="/posts">
+          <Link to="/Blog-Reaction/posts">
             <Button>Back to Posts</Button>
           </Link>
         </Container>

@@ -13,11 +13,15 @@ function App() {
       <div className="App">
         <Header />
         <Switch>
-          <Route path="/" exact component={PostList} />
-          <Route path="/posts" exact component={PostList} />
-          <Route path="/posts/new" exact component={PostForm} />
-          <Route path="/post/edit/:id" exact component={PostForm} />
-          <Route path="/post/:id" exact component={PostView} />
+          <Route path="/Blog-Reaction" exact component={PostList} />
+          <Route path="/Blog-Reaction/posts" exact component={PostList} />
+          <Route path="/Blog-Reaction/posts/new" exact component={PostForm} />
+          <Route
+            path="/Blog-Reaction/post/edit/:id"
+            exact
+            component={PostForm}
+          />
+          <Route path="/Blog-Reaction/post/:id" exact component={PostView} />
         </Switch>
       </div>
     </Router>

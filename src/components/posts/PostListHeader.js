@@ -27,7 +27,7 @@ class PostListHeader extends React.Component {
               <Image src={EditImage} rounded />
               &nbsp;&nbsp;
               <h2>Posts</h2>&nbsp;&nbsp;
-              <Link to="/posts/new">
+              <Link to="/Blog-Reaction/posts/new">
                 <Button>Add New</Button>
               </Link>
             </Row>

@@ -19,7 +19,7 @@ class Header extends React.Component {
       <>
         <Container fluid id="modified-container">
           <div className="Logo">
-            <Link to="/">
+            <Link to="/Blog-Reaction">
               <Image src={Logo} thumbnail className="img-responsive" />
             </Link>
           </div>
