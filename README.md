@@ -1,5 +1,14 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Features:
+- CRUD operation for blog posts
+- CRUD operation for comments
+- Mock API integration using AXIOS
+- Global store using redux
+- Middleware implementation using redux saga
+- Like/ Unlike feature
+- Front-end using bootstrap and material UI
+
 ## Available Scripts
 
 In the project directory, you can run:
